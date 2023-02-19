@@ -1,0 +1,31 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2023-02-19T15:55:49+01:00",
+    "name": "Operation: Harsh Doorstop",
+    "author": "realchameleong@protonmail.ch",
+    "description": "I got sick of games with lootboxes and predatory monetization... with no single player missions or mod support. So our community started making this game instead. A shooter sandbox with all the features a game should have. Oh... and we're funding it on Patreon and giving it away for free.",
+    "features": null,
+    "docker_images": {
+        "ghcr.io\/parkervcp\/games:source": "ghcr.io\/parkervcp\/games:source"
+    },
+    "file_denylist": [],
+    "startup": ".\/HarshDoorstopServer.sh",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"Engine Initialization\"\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n\r\n# File: Pterodactyl Satisfactory Egg - egg-satisfactory.json\r\n# Authors: Red-Thirten, Kubi, matthewp, Software-Noob, and Zarklord\r\n# Date: 2022\/10\/13\r\n# License: MIT License\r\n\r\n## Download and install SteamCMD\r\ncd \/tmp\r\ncurl -sSL -o steamcmd.tar.gz https:\/\/steamcdn-a.akamaihd.net\/client\/installer\/steamcmd_linux.tar.gz\r\nmkdir -p \/mnt\/server\/steamcmd\r\ntar -xzvf steamcmd.tar.gz -C \/mnt\/server\/steamcmd\r\ncd \/mnt\/server\/steamcmd\r\n\r\n# SteamCMD fails otherwise for some reason, even running as root.\r\nchown -R root:root \/mnt\r\nexport HOME=\/mnt\/server\r\n\r\n# Install game server using SteamCMD\r\n.\/steamcmd.sh +force_install_dir \/mnt\/server +login anonymous +app_update 950900 validate +exit\r\n\r\n# Set up 32 and 64 bit libraries\r\nmkdir -p \/mnt\/server\/.steam\/sdk{32,64}\r\ncp -v linux32\/steamclient.so \/mnt\/server\/.steam\/sdk32\/steamclient.so\r\ncp -v linux64\/steamclient.so \/mnt\/server\/.steam\/sdk64\/steamclient.so\r\n\r\n## Satisfactory setup\r\n# Check for successful installation and make the core binary executable.\r\ncd \/mnt\/server\/HarshDoorstop\/Binaries\/Linux\r\nif [[ ! -f HarshDoorstopServer-Linux-Shipping ]]; then\r\n    echo -e \"\\n\\nSteamCMD failed to install the Operation Harsh Doorstop Dedicated Server!\"\r\n    echo -e \"\\tTry reinstalling the server again.\\n\"\r\n    exit 1\r\nelse\r\n    chmod +x HarshDoorstopServer-Linux-Shipping\r\nfi\r\n\r\n\r\n\r\necho -e \"\\nOperation Harsh Doorstop Dedicated Server successfully installed!\\n\"",
+            "container": "ghcr.io\/pterodactyl\/installers:debian",
+            "entrypoint": "\/bin\/bash"
+        }
+    },
+    "variables": []
+}
